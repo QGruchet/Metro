@@ -38,8 +38,24 @@ int main(int argc, char* argv[])
 	graphe.nb_sommets = compte_nb_sommets("metro.txt");
 	printf("%d stations trouvées\n", graphe.nb_sommets);
 	graphe = initialise_stations("metro.txt", graphe);
-	graphe = initialise_reseau("metro.txt", graphe);
+
+	for (int j = 1; j < 100; ++j)
+	{
+		for (int i = 0; i < graphe.nb_sommets; ++i)
+		{
+			if(graphe.station[i].num_ligne == j){
+				printf("%d ", graphe.station[i].num_ligne);
+				for(int h = 0; h < graphe.station[i].nombre_nom; ++h){
+					printf("%c", graphe.station[i].nom_station[h]);
+				}
+				printf("\n");
+			}
+		}
+		
+	}
+	//graphe = initialise_reseau("metro.txt", graphe);
 
 	//calcul_plus_court_chemin(graphe, 0004, 0003);
+	//libere_graphe(graphe);
 	return 0;
 }
