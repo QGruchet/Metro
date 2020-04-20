@@ -20,6 +20,7 @@
 typedef struct sommet {
 	int num_sommet;	// numéro du sommet dans metro.txt
 	int num_ligne;		//numéro de la ligne du sommet
+	int nombre_nom;
 	char nom_station[64];	//nom de la station
 } SOMMET;
 
