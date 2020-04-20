@@ -1,6 +1,9 @@
 // Clément Caumes 21501810
 // Yassin Doudouh 21500127
 // 05 mai 2017
+// Clément Caumes 21501810
+// Yassin Doudouh 21500127
+// 05 mai 2017
 // Projet Metro IN403
 
 // lire_ecrire.c du projet Metro
@@ -55,11 +58,12 @@ GRAPHE initialise_stations(char *nomFichier, GRAPHE graphe)
 {
 	printf("Recuperations des infos sur les stations...");
 	FILE *f = fopen(nomFichier, "r");
-	char c;
+	char c =' ';
 	int num_station;
 	int num_ligne;
 	int i = 0;
 	int j = 0;
+	graphe.station = malloc(sizeof(GRAPHE) * 375);
 
 	while (i < 3) {		//on lit les 3 premières lignes qui ne sont que des commentaires
 		c = fgetc(f);
@@ -69,20 +73,21 @@ GRAPHE initialise_stations(char *nomFichier, GRAPHE graphe)
 	//pour chaque sommet, on lit son numero de sommet, son numero de ligne, et son nom
 	//chaque sommet correspond à une station d'une ligne
 	//Attention: on peut avoir plusieurs stations avec le même nom (pas la même ligne)
-	for (int h = 0; h < graphe.nb_sommets + 1; h++) {
+	for (int h = 0; h < graphe.nb_sommets - 1; h++) {
 		c = fgetc(f);
-		fscanf(f, "%d %d ", &num_station, &num_ligne);
-		j = 0;
-		do { //lecture du nom de la station
-			c = fgetc(f);
-			printf("yes\n");
-			graphe.station[h].nom_station[j] = c;
-			printf("no\n");
-			j++;
-		}while(c != '\n');
-		graphe.station[h].nom_station[j - 1] = '\0';
-		graphe.station[h].num_sommet = num_station;
-		graphe.station[h].num_ligne = num_ligne;
+		if(c == 'V'){
+			fscanf(f, "%d %d ", &num_station, &num_ligne);
+			j = 0;
+			do { //lecture du nom de la station
+				c = fgetc(f);
+				graphe.station[h].nom_station[j] = c;
+				j++;
+			}while(c != '\n');
+			graphe.station[h].nom_station[j - 1] = '\0';
+			graphe.station[h].nombre_nom = j;
+			graphe.station[h].num_sommet = num_station;
+			graphe.station[h].num_ligne = num_ligne;
+		}
 	}
 	fclose(f);
 	printf("DONE\n");
@@ -109,6 +114,8 @@ GRAPHE initialise_reseau(char *nomFichier, GRAPHE graphe)
 	printf("Initialisations du reseaux du Metropolitain...");
 	FILE *f = fopen(nomFichier, "r");
 	char c, d = ' ';
+	graphe.reseau = malloc(sizeof(int));
+
 	while (d != 'E') {	//on lit jusqu'à lire le 'E' signifiant le début des arcs
 		c = fgetc(f);
 		if (c == '\n')
