@@ -1,10 +1,3 @@
-// Clément Caumes 21501810
-// Yassin Doudouh 21500127
-// 05 mai 2017
-// Clément Caumes 21501810
-// Yassin Doudouh 21500127
-// 05 mai 2017
-// Projet Metro IN403
 
 // lire_ecrire.c du projet Metro
 // Contient les fonctions relatives à la lecture de metro.txt et à l'écriture dans le terminal
@@ -17,27 +10,20 @@
 
 #include "types.h"
 
-// Fonction en cas d'erreur 
-void erreur1()
-{
-	printf("ERREUR DIJKSTRA: RANG DU SOMMET DE DEPART INVALIDE\n");
-	exit(1);
-}
-
 // Fonction qui compte le nombre de sommets dans le fichier (nom en argument)
 int compte_nb_sommets(char *nomFichier)
 {
 	printf("Initialisations du nombres de stations...");
 	FILE *f = fopen(nomFichier, "r");
-	//int i = 0;
+	int i = 0;
 	char c = ' ';
 	char d = ' ';
-	// while (i < 3) {		//On ignore les 3 premieres lignes
-	// 	c = fgetc(f);
-	// 	if (c == '\n')
-	// 		i++;
-	// }
-	int i = 1;
+	while (i < 3) {		//On ignore les 3 premieres lignes
+		c = fgetc(f);
+		if (c == '\n')
+			i++;
+	}
+	i = 1;
 	while(d != 'E')
 	{
 		c = fgetc(f);
@@ -63,7 +49,7 @@ GRAPHE initialise_stations(char *nomFichier, GRAPHE graphe)
 	int num_ligne;
 	int i = 0;
 	int j = 0;
-	graphe.station = malloc(sizeof(GRAPHE) * 375);
+	graphe.station = malloc(sizeof(SOMMET) * 375);
 
 	while (i < 3) {		//on lit les 3 premières lignes qui ne sont que des commentaires
 		c = fgetc(f);
@@ -114,7 +100,11 @@ GRAPHE initialise_reseau(char *nomFichier, GRAPHE graphe)
 	printf("Initialisations du reseaux du Metropolitain...");
 	FILE *f = fopen(nomFichier, "r");
 	char c, d = ' ';
-	graphe.reseau = malloc(sizeof(int));
+	graphe.reseau = malloc(sizeof(ARC) * 375);
+	for (int i = 0; i < 1000; ++i)
+	{
+		graphe.reseau[i] = calloc(375, sizeof(ARC*));
+	}
 
 	while (d != 'E') {	//on lit jusqu'à lire le 'E' signifiant le début des arcs
 		c = fgetc(f);
@@ -167,7 +157,7 @@ int calcul_minutes(int duree)
 }
 
 // Fonction qui écrit le plus court chemin entre les 2 sommets sélectionnés dans le terminal
-/*void ecrit_chemin(GRAPHE g, DIJKSTRA d)
+void ecrit_chemin(GRAPHE graphe, DIJKSTRA d)
 {
 	int h, m, s;
 	h = calcul_heures(d.duree);
@@ -176,39 +166,45 @@ int calcul_minutes(int duree)
 	struct elem *p1 = d.chemin;
 	struct elem *p2 = d.chemin->suiv;
 	struct elem *temp;
-	printf("- Vous êtes à %s.\n", graphe.station[d.rang_deb].nom_station);
+	printf("- Station de depart : %s.\n", graphe.station[d.rang_deb].nom_station);
+	printf("- Station d'arrivee : %s.\n", graphe.station[d.rang_fin].nom_station);
 	while (!teste_liste_vide(p2)) {
-		if ((graphe.reseau[p1->s.num_sommet][p2->s.num_sommet].terminus !=
-		     PAS_DE_TERMINUS) && ((p1->s.num_sommet) == d.rang_deb)) {
-			temp = p1->suiv;
-			if (p1->s.num_ligne == 30)
-				printf("- Prenez la ligne 3bis");
-			else if (p1->s.num_ligne == 70)
-				printf("- Prenez la ligne 7bis");
-			else
-				printf("- Prenez la ligne %d", p1->s.num_ligne);
-			printf(" direction %s. \n",
-			       graphe.station[graphe.
-					 reseau[p1->s.num_sommet][temp->s.
-								  num_sommet].
-					 terminus].nom_station);
+		if ((graphe.reseau[p1->s.num_sommet][p2->s.num_sommet].terminus != PAS_DE_TERMINUS) && ((p1->s.num_sommet) == d.rang_deb)) 
+		{
+			switch(p1->s.num_ligne)
+			{
+				case(30):
+					printf("- Prenez la ligne 3bis\n");
+					break;
+				case(70):
+					printf("- Prenez la ligne 7bis\n");
+					break;
+				default:
+					printf("prenez la ligne %d\n", p1->s.num_ligne);
+					break;
+			}
+			// if (p1->s.num_ligne == 30)
+			// 	printf("- Prenez la ligne 3bis");
+			// else if (p1->s.num_ligne == 70)
+			// 	printf("- Prenez la ligne 7bis");
+			// else
+			// 	printf("- Prenez la ligne %d", p1->s.num_ligne);
+
+			// printf(" direction %s. \n", graphe.station[graphe.reseau[p1->s.num_sommet][temp->s.num_sommet].terminus].nom_station);
 		}
 		//si on change de ligne
-		if (graphe.reseau[p1->s.num_sommet][p2->s.num_sommet].terminus ==
-		    PAS_DE_TERMINUS) {
+		if (graphe.reseau[p1->s.num_sommet][p2->s.num_sommet].terminus == PAS_DE_TERMINUS)
+		{
 			printf("- A %s, prenez la ligne ", p1->s.nom_station);
-			if (p1->s.num_ligne == 30)
-				printf("3bis ");
-			else if (p1->s.num_ligne == 70)
-				printf("7bis ");
-			else
-				printf("%d ", p1->s.num_ligne);
+
+			if (p1->s.num_ligne == 30) printf("3bis");
+			else if (p1->s.num_ligne == 70) printf("7bis");
+			else printf("%d ", p1->s.num_ligne);
+
 			if (p2->s.num_sommet != d.rang_fin) {
 				temp = p2->suiv;
-				printf("direction %s.\n",
-				       graphe.station[graphe.reseau[p2->s.num_sommet][temp->s.num_sommet].terminus].nom_station);
-			} else
-				printf("\n");
+				printf("direction %s.\n", graphe.station[graphe.reseau[p2->s.num_sommet][temp->s.num_sommet].terminus].nom_station);
+			} else printf("\n");
 		}
 		p1 = p1->suiv;
 		p2 = p2->suiv;
@@ -230,4 +226,4 @@ int calcul_minutes(int duree)
 		printf("%d seconde.\n", s);
 	printf("------------------------------------------------------------");
 	printf("\n\n");
-}*/
+}

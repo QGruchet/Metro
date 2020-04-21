@@ -1,3 +1,6 @@
+# stations et lignes du métro parisien
+# format : V num_sommet num_ligne nom_sommet
+#          E num_sommet1 num_sommet1 temps_en_secondes num_terminus_aller num_terminus_retour
 V 0000 12 Abbesses
 V 0001 2 Alexandre Dumas
 V 0002 9 Alma Marceau
@@ -846,7 +849,3 @@ E 343 344 240 9999 9999
 E 346 347 180 9999 9999
 E 354 355 180 9999 9999
 E 366 367 180 9999 9999
-
-# stations et lignes du métro parisien
-# format : V num_sommet num_ligne nom_sommet
-#          E num_sommet1 num_sommet1 temps_en_secondes num_terminus_aller num_terminus_retour

@@ -1,7 +1,3 @@
-// Clément Caumes 21501810
-// Yassin Doudouh 21500127
-// 05 mai 2017
-// Projet Metro IN403
 
 // graphe.h du projet Metro
 // Contient les signatures des fonctions de graphe.c et les structures de manipulations de graphe
@@ -12,11 +8,6 @@
 #ifndef __GRAPHE_H
 #define __GRAPHE_H
 
-// struct sommet {
-// 	char nom_station[TAILLE_CHAINE_CARACTERES];	//nom de la station
-// 	int num_sommet;		// numéro du sommet dans metro.txt
-// 	int num_ligne;		//numéro de la ligne du sommet
-// };
 typedef struct sommet {
 	int num_sommet;	// numéro du sommet dans metro.txt
 	int num_ligne;		//numéro de la ligne du sommet
@@ -44,12 +35,6 @@ typedef struct graphe {
 	ARC **reseau;		//tableau des arcs du graphe
 } GRAPHE;
 
-typedef struct metro {
-	//int affichage;		//AFFICHAGE_GENERAL ou ZOOM
-	int mode;		//MODE_METRO ou MODE_QUITTER
-	GRAPHE g;		//graphe du projet
-} METRO;
-
 struct elem {			//liste de sommets
 	SOMMET s;
 	struct elem *suiv;
@@ -61,9 +46,9 @@ struct elem *libere_liste(struct elem *l);
 void libere_chemin_dijkstra(struct elem *l);
 
 GRAPHE initialise_graphe(int n);
-METRO initialise_metro(int n);
 DIJKSTRA calcul_dijkstra(GRAPHE g, int rang_sommet_depart, int rang_fin);
 GRAPHE calcul_plus_court_chemin(GRAPHE g, int a, int b);
 void libere_graphe(GRAPHE g);
+void libere_station(GRAPHE g);
 
 #endif

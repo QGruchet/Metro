@@ -1,7 +1,3 @@
-// Clément Caumes 21501810
-// Yassin Doudouh 21500127
-// 05 mai 2017
-// Projet Metro IN403
 
 // graphe.c du projet Metro
 // Contient les fonctions relatives à la gestion du graphe
@@ -127,15 +123,6 @@ GRAPHE initialise_graphe(int n)
 	return g;
 }
 
-// // Fonction d'initialisation de la structure METRO
-// METRO initialise_metro(int n)
-// {
-// 	METRO m;
-// 	m.affichage = AFFICHAGE_GENERAL;
-// 	m.mode = MODE_METRO;
-// 	m.g = initialise_graphe(n);
-// 	return m;
-// }
 
 // Fonction qui met dans le tableau t de taille n les valeurs égales à val
 void initialise_tableau(int *t, int n, int val)
@@ -186,12 +173,20 @@ DIJKSTRA calcul_dijkstra(GRAPHE g, int rang_sommet_depart, int rang_fin)
 {
 	DIJKSTRA d = initialise_dijkstra(rang_sommet_depart, rang_fin);
 	int i, min, sommet_a_traiter;
-	if (rang_fin >= g.nb_sommets)
-		erreur1();
-	if (rang_sommet_depart >= g.nb_sommets)
-		erreur1();
+	if (rang_fin >= g.nb_sommets){
+		printf("Mauvaise selection de station\n");
+		exit(1);
+	}
+	if (rang_sommet_depart >= g.nb_sommets){
+		printf("Mauvaise selection de station\n");
+		exit(1);
+	}
 	if ((rang_sommet_depart == INVALIDE) || (rang_fin == INVALIDE))
 		return d;
+	// if(graphe.station[rang_sommet_depart].num_ligne == graphe.station[rang_fin].num_ligne)
+	// {
+	// 	d = cree_chemin()
+	// }
 	int station_traitee[g.nb_sommets];	//contient 0 ou 1 si la station a ete vu ou non
 	int station_pere[g.nb_sommets];	//contient le pere du sommet i par lequel le chemin est le plus court
 	int tdijkstra[g.nb_sommets];	//contient les plus petites distances entre le sommet de depart et lelement
@@ -203,8 +198,7 @@ DIJKSTRA calcul_dijkstra(GRAPHE g, int rang_sommet_depart, int rang_fin)
 
 	for (i = 0; i < g.nb_sommets; i++) {	//premiere iteration qui met les pondérations sur les arcs des successeurs du sommet de départ
 		if (g.reseau[rang_sommet_depart][i].ponderation != AUCUN_ARC) {
-			tdijkstra[i] =
-			    g.reseau[rang_sommet_depart][i].ponderation;
+			tdijkstra[i] = g.reseau[rang_sommet_depart][i].ponderation;
 			station_pere[i] = rang_sommet_depart;
 		} else
 			tdijkstra[i] = AUCUN_ARC;
@@ -216,8 +210,7 @@ DIJKSTRA calcul_dijkstra(GRAPHE g, int rang_sommet_depart, int rang_fin)
 		min = INFINI;
 		//recherche du prochain sommet à traiter (qui a la plus petite distance)
 		for (i = 0; i < g.nb_sommets; i++) {
-			if ((station_traitee[i] == NON_TRAITE)
-			    && (tdijkstra[i] < min)) {
+			if ((station_traitee[i] == NON_TRAITE) && (tdijkstra[i] < min)) {
 				sommet_a_traiter = i;
 				min = tdijkstra[i];
 			}
@@ -226,16 +219,9 @@ DIJKSTRA calcul_dijkstra(GRAPHE g, int rang_sommet_depart, int rang_fin)
 		// ici on connait le sommet a traiter
 		for (i = 0; i < g.nb_sommets; i++) {
 			//si on améliore la plus petite distance en passant par ce sommet
-			if (g.reseau[sommet_a_traiter][i].ponderation !=
-			    AUCUN_ARC) {
-				if (tdijkstra[i] >=
-				    (tdijkstra[sommet_a_traiter] +
-				     g.reseau[sommet_a_traiter][i].
-				     ponderation)) {
-					tdijkstra[i] =
-					    tdijkstra[sommet_a_traiter] +
-					    g.reseau[sommet_a_traiter][i].
-					    ponderation;
+			if (g.reseau[sommet_a_traiter][i].ponderation != AUCUN_ARC) {
+				if (tdijkstra[i] >= (tdijkstra[sommet_a_traiter] + g.reseau[sommet_a_traiter][i].ponderation)) {
+					tdijkstra[i] = tdijkstra[sommet_a_traiter] + g.reseau[sommet_a_traiter][i].ponderation;
 					station_pere[i] = sommet_a_traiter;	// alors le pere de ce sommet est le sommet traité de départ
 				}
 			}
@@ -252,7 +238,7 @@ GRAPHE calcul_plus_court_chemin(GRAPHE g, int a, int b)
 		return g;
 	g.d = calcul_dijkstra(g, a, b);
 	affiche_liste(g.d.chemin);
-	//ecrit_chemin(g, g.d);
+	ecrit_chemin(g, g.d);
 	return g;
 }
 
@@ -265,4 +251,8 @@ void libere_graphe(GRAPHE g)
 		free(g.reseau[i]);
 	}
 	free(g.reseau);
+}
+
+void libere_station(GRAPHE g){
+	free(g.station);
 }

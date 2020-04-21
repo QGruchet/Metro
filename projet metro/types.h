@@ -1,7 +1,3 @@
-// Clément Caumes 21501810
-// Yassin Doudouh 21500127
-// 05 mai 2017
-// Projet Metro IN403
 
 // types.h du projet Metro
 // Contient les constantes du projet Metro
