@@ -42,7 +42,7 @@ void libere_chemin_dijkstra(struct elem *l);
 
 GRAPHE initialise_graphe(int n);
 DIJKSTRA calcul_dijkstra(GRAPHE g, int rang_sommet_depart, int rang_fin);
-GRAPHE calcul_plus_court_chemin(GRAPHE g, int a, int b);
+GRAPHE calcul_plus_court_chemin(GRAPHE g, int a, int b, int choix);
 void libere_graphe(GRAPHE g);
 
 #endif
