@@ -155,16 +155,16 @@ DIJKSTRA ajoute_dijkstra(DIJKSTRA d, SOMMET s)
 // \param		d 			structure DIJKSTRA
 // \param		*tab_peres	tableau des voisins de chaques sommets
 // \return					structure DIJKSTRA
-DIJKSTRA cree_chemin(DIJKSTRA d, int *tab_peres, GRAPHE g)
+DIJKSTRA cree_chemin(DIJKSTRA d, int *tab_peres, GRAPHE graphe)
 {
 	int temp;
 	int s = d.rang_fin;
-	d = ajoute_dijkstra(d, g.station[s]);
+	d = ajoute_dijkstra(d, graphe.station[s]);
 	while (s != d.rang_deb) {
 		temp = s;
 		s = tab_peres[temp];
-		d.duree_total += g.reseau[temp][tab_peres[temp]].duree_entre_station;
-		d = ajoute_dijkstra(d, g.station[s]);
+		d.duree_total += graphe.reseau[temp][tab_peres[temp]].duree_entre_station;
+		d = ajoute_dijkstra(d, graphe.station[s]);
 	}
 	return d;
 }
@@ -174,64 +174,64 @@ DIJKSTRA cree_chemin(DIJKSTRA d, int *tab_peres, GRAPHE g)
 // \param		rang_depart		station de départ
 // \param		rang_fin		station d'arrivée
 // \return						structure DJIKSTRA remplie du chemin le plus court entre les deux stations en arg
-DIJKSTRA calcul_dijkstra(GRAPHE g, int rang_depart, int rang_fin)
+DIJKSTRA calcul_dijkstra(GRAPHE graphe, int rang_depart, int rang_fin)
 {
 	DIJKSTRA d = initialise_dijkstra(rang_depart, rang_fin);
 	int i;
 	int min = INFINI; 
 	int sommet_a_traiter = 0;
-	if (rang_fin >= g.nb_sommets){
+	if (rang_fin >= graphe.nb_sommets){
 		printf("Station d'arrivée n'existe pas\n");
 		exit(1);
 	}
-	if (rang_depart >= g.nb_sommets){
+	if (rang_depart >= graphe.nb_sommets){
 		printf("Station de départ n'existe pas\n");
 		exit(1);
 	}
 	if ((rang_depart == null) || (rang_fin == null))
 		return d;
 	
-	int station_traitee[g.nb_sommets];	//contient 0 ou 1 si la station a ete vu ou non
-	int station_pere[g.nb_sommets];	//contient le pere du sommet i par lequel le chemin est le plus court
-	int tdijkstra[g.nb_sommets];	//contient les plus petites distances entre le sommet de depart et lelement
+	/*Création des tableaux nécessaires à l'algo Dijkstra*/
+	int station_traitee[graphe.nb_sommets];	
+	int station_pere[graphe.nb_sommets];	
+	int min_dijkstra[graphe.nb_sommets];	
 
-	//initialisation lors du calcul du plus court chemin
-	initialise_tableau(station_traitee, g.nb_sommets, NON_TRAITE);	//aucun sommet n'a été traité
-	initialise_tableau(station_pere, g.nb_sommets, AUCUN_PERE);	//aucun sommet n'a encore de père
-	station_traitee[rang_depart] = TRAITE;	//le sommet est traité
+	/*Initialisation des différents tableaux*/
+	initialise_tableau(station_traitee, graphe.nb_sommets, NON_TRAITE);	
+	initialise_tableau(station_pere, graphe.nb_sommets, AUCUN_PERE);	
+	station_traitee[rang_depart] = TRAITE;
 
-	for (i = 0; i < g.nb_sommets; i-=-1) {	//premiere iteration qui met les pondérations sur les LIAISONs des successeurs du sommet de départ
-		if (g.reseau[rang_depart][i].duree_entre_station != AUCUN_ARC) {
-			tdijkstra[i] = g.reseau[rang_depart][i].duree_entre_station;
+	/*Rempli les tableaux en fonctions des pères du sommet de départ*/
+	for (i = 0; i < graphe.nb_sommets; i-=-1) {	
+		if (graphe.reseau[rang_depart][i].duree_entre_station != AUCUN_ARC) {
+			min_dijkstra[i] = graphe.reseau[rang_depart][i].duree_entre_station;
 			station_pere[i] = rang_depart;
 		} else
-			tdijkstra[i] = AUCUN_ARC;
+			min_dijkstra[i] = AUCUN_ARC;
 	}
-	tdijkstra[rang_depart] = 0;	//la plus petite distance entre le sommet de départ et lui-même est 0
+	min_dijkstra[rang_depart] = 0;	//La distance entre une stations et elle-même est0
 
-	//tant que tous les sommets n'ont pas été vue
-	while (!teste_tous_sommets_traites(station_traitee, g.nb_sommets)) {
+	/*tant que tous les sommets n'ont pas été vue*/
+	while (!teste_tous_sommets_traites(station_traitee, graphe.nb_sommets)) {
 		min = INFINI;
-		//recherche du prochain sommet à traiter (qui a la plus petite distance)
-		for (i = 0; i < g.nb_sommets; i++) {
-			if ((station_traitee[i] == NON_TRAITE) && (tdijkstra[i] < min)) {
+		/*recherche du prochain sommet à traiter*/
+		for (i = 0; i < graphe.nb_sommets; i++) {
+			if ((station_traitee[i] == NON_TRAITE) && (min_dijkstra[i] < min)) {
 				sommet_a_traiter = i;
-				min = tdijkstra[i];
+				min = min_dijkstra[i];
 			}
 		}
-		station_traitee[sommet_a_traiter] = TRAITE;	//on traite ce sommet
-		// ici on connait le sommet a traiter
-		for (i = 0; i < g.nb_sommets; i++) {
-			//si on améliore la plus petite distance en passant par ce sommet
-			if (g.reseau[sommet_a_traiter][i].duree_entre_station != AUCUN_ARC) {
-				if (tdijkstra[i] >= (tdijkstra[sommet_a_traiter] + g.reseau[sommet_a_traiter][i].duree_entre_station)) {
-					tdijkstra[i] = tdijkstra[sommet_a_traiter] + g.reseau[sommet_a_traiter][i].duree_entre_station;
-					station_pere[i] = sommet_a_traiter;	// alors le pere de ce sommet est le sommet traité de départ
+		station_traitee[sommet_a_traiter] = TRAITE;	
+		for (i = 0; i < graphe.nb_sommets; i++) {
+			if (graphe.reseau[sommet_a_traiter][i].duree_entre_station != AUCUN_ARC) {
+				if (min_dijkstra[i] >= (min_dijkstra[sommet_a_traiter] + graphe.reseau[sommet_a_traiter][i].duree_entre_station)) {
+					min_dijkstra[i] = min_dijkstra[sommet_a_traiter] + graphe.reseau[sommet_a_traiter][i].duree_entre_station;
+					station_pere[i] = sommet_a_traiter;	
 				}
 			}
 		}
 	}
-	d = cree_chemin(d, station_pere, g);	//crée la liste des stations qu'il faut traverser
+	d = cree_chemin(d, station_pere, graphe);	//crée la liste des stations qu'il faut traverser
 	return d;
 }
 
@@ -257,10 +257,10 @@ GRAPHE calcul_plus_court_chemin(GRAPHE graphe, int a, int b, int choix)
 // Fonction free -- libère la mémoire occupé par les structures du projet
 // \param		g 		structure graphe dont on veux libérer la mémoire
 // \return				NULL
-void libere_graphe(GRAPHE g)
+void libere_graphe(GRAPHE graphe)
 {
-	free(g.station);
+	free(graphe.station);
 	for (int i = 0; i < 473; ++i)
-		free(g.reseau[i]);
-	free(g.reseau);
+		free(graphe.reseau[i]);
+	free(graphe.reseau);
 }
