@@ -240,14 +240,18 @@ DIJKSTRA calcul_dijkstra(GRAPHE g, int rang_depart, int rang_fin)
 // \param		 a 		station de départ
 // \param		 b		station d'arrivée
 // \return				structure GRAPHE entièrement remplie 
-GRAPHE calcul_plus_court_chemin(GRAPHE g, int a, int b)
+GRAPHE calcul_plus_court_chemin(GRAPHE graphe, int a, int b, int choix)
 {
 	if ((a == null) || (b == null))
-		return g;
-	g.d = calcul_dijkstra(g, a, b);
-	//affiche_liste(g.d.chemin);
-	ecrit_chemin(g, g.d);
-	return g;
+		return graphe;
+	graphe.d = calcul_dijkstra(graphe, a, b);
+	if(choix == 1) affiche_liste(graphe.d.chemin);
+	if(choix == 2) ecrit_chemin(graphe, graphe.d);
+	if (choix == 3){
+		affiche_liste(graphe.d.chemin);
+		ecrit_chemin(graphe, graphe.d);
+	}
+	return graphe;
 }
 
 // Fonction free -- libère la mémoire occupé par les structures du projet
