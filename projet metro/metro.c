@@ -6,11 +6,10 @@
 
  int choix(const char* cmd, GRAPHE graphe){
 
-	if(cmd[0] == 'q'){
+	if(cmd[0] == 'q' && cmd[1] == 'u' && cmd[2] == 'i' && cmd[3] == 't' && cmd[4] == 't' && cmd[5] == 'e' && cmd[6] == 'r'){
 		libere_graphe(graphe);
 		return printf("\tBye Bye. Revenez vite Ebovoyag !\n"), 0;
 	}
-	 
 	if(cmd[0] == 'l' && cmd[1] == 's'){
 
 		if(cmd[2] == '-' && cmd[3] == 'a'){
@@ -53,8 +52,8 @@
 			}
 		}
 	}
-	 
-	if(cmd[0] == 'r'){
+
+	if(cmd[0] == 'r'&& cmd[1] == 'e' && cmd[2] == 's' && cmd[3] == 'e' && cmd[4] == 'a' && cmd[5] == 'u'){
 		for (int i = 0; i < graphe.nb_sommets; ++i)
 		{
 			for (int j = 0; j < graphe.nb_sommets; ++j)
@@ -65,20 +64,11 @@
 		}
 	}
 
-	if(cmd[0] == 'h'){
-		printf("ls-l : lister les stations par ligne\n");
-		printf("ls-a : lister les stations par ordre alphabetique\n");
-		printf("q : quitter le menu\n");
-		printf("r : afficher le reseau\n");
-		printf("n : afficher le nombres de stations\n");
-		printf("c : calcul le plus court chemin entre deux stations\n");
-	}
-
-	if(cmd[0] == 'n'){
+	if(cmd[0] == 'n' && cmd[1] == 'o' && cmd[2] == 'm' && cmd[3] == 'b' && cmd[4] == 'r' && cmd[1] == 'e' ){
 		printf("%d stations trouvées\n", graphe.nb_sommets);
 	}
 	
- 	if(cmd[0] == 'c'){
+ 	if(cmd[0] == 'c' && cmd[1] == 'a' && cmd[2] == 'l' && cmd[3] == 'c' && cmd[4] == 'u' && cmd[5] == 'l' && cmd[6] == 'e' ){
 		int deb, fin = 0;
 		printf("\tOH SHIT HERE WE GO AGAIN !\n");
 		printf("Veuillez rentrer le numero de la station de départ : ");
@@ -87,9 +77,19 @@
 		scanf("%d", &fin);
 		graphe = calcul_plus_court_chemin(graphe, deb, fin);
  	}
+
+ 	if(cmd[0] == 'h' && cmd[1] == 'e' && cmd[2] == 'l' && cmd[3] == 'p'){
+		printf("help : affiche le guide des commandes disponibles\n");
+		printf("ls-l : lister les stations par ligne\n");
+		printf("ls-a : lister les stations par ordre alphabetique\n");
+		printf("reseau : afficher le reseau\n");
+		printf("nombre : afficher le nombres de stations\n");
+		printf("calcule : calcul le plus court chemin entre deux stations\n");
+		printf("quitter : quitter le menu\n");
+	}
+
  	return -1;
 }
-
 
 int main(int argc, char* argv[])
 {
