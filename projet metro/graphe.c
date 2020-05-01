@@ -1,7 +1,3 @@
-
-// graphe.c du projet Metro
-// Contient les fonctions relatives à la gestion du graphe
-
 #include <stdio.h>
 #include <stdlib.h>
 #include "graphe.h"
@@ -10,13 +6,16 @@
 
 /* Fonctions de manipulations de listes */
 
-// Fonction pour créer une liste
+// Fonction liste -- creer une liste vide
+// \return				NULL
 struct elem *creer_liste()
 {
 	return NULL;
 }
 
-// Teste si la liste passée en argument est vide
+// Fonction liste -- creer une liste vide
+// \param		*l 		liste d'éléments
+// \return				1 si elle est null, 0 sinon
 int teste_liste_vide(struct elem *l)
 {
 	if (l == NULL)
@@ -25,7 +24,9 @@ int teste_liste_vide(struct elem *l)
 		return 0;
 }
 
-// Fonction qui affiche le contenu de la liste avec le nom des stations et de sa ligne
+// Fonction liste -- affiche la liste
+// \param		*l 		liste d'éléments
+// \return				NULL
 void affiche_liste(struct elem *l)
 {
 
@@ -45,7 +46,9 @@ void affiche_liste(struct elem *l)
 	printf("\n");
 }
 
-// Fonction qui vide la mémoire d'une liste
+// Fonction free -- libere la mémoire occupé par la liste
+// \param		*l 		liste d'éléments
+// \return				NULL
 struct elem *libere_liste(struct elem *l)
 {
 	struct elem *tmp;
@@ -57,13 +60,18 @@ struct elem *libere_liste(struct elem *l)
 	return NULL;
 }
 
-// Fonction qui libère la liste dans la structure dijkstra
+// Fonction liste -- appelle la fonction libere_liste
+// \param		*l 		liste d'éléments
+// \return				NULL
 void libere_chemin_dijkstra(struct elem *l)
 {
 	l = libere_liste(l);
 }
 
-// Fonction qui ajoute à la fin un sommet à la liste l
+// Fonction liste -- ajoute un élément à la fin de la liste
+// \param		*l 		liste d'éléments
+// \param		 s 		station a ajouter dans la liste
+// \return				liste(avec ajout de l'élément)
 struct elem *ajoute_elem_fin(struct elem *l, SOMMET s)
 {
 	struct elem *new = malloc(sizeof(struct elem));
@@ -78,80 +86,75 @@ struct elem *ajoute_elem_fin(struct elem *l, SOMMET s)
 	return debut;
 }
 
-// Fonction qui ajoute au début un sommet à la liste l
-struct elem *ajoute_elem_debut(struct elem *l, SOMMET i)
+// Fonction liste -- ajoute un élément au d de la liste
+// \param		*l 			liste d'éléments
+// \param		 sommet		station a ajouter dans la liste
+// \return					liste(avec ajout de l'élément)
+struct elem *ajoute_elem_debut(struct elem *l, SOMMET sommet)
 {
 	struct elem *new = malloc(sizeof(struct elem));
-	new->s = i;
+	new->s = sommet;
 	new->suiv = l;
 	return new;
 }
 
 /*--------------------------------------------------*/
 
-// Fonction d'initialisation de la structure dijkstra entre les sommets de rangs a et b
+// Fonction DIJKSTRA -- initialise la structure DJIKSTRA
+// \param		 a 		station de départ
+// \param		 b 		station d'arrivée
+// \return				la structure DIJKSTRA avec chemin[2] remplie
 DIJKSTRA initialise_dijkstra(int a, int b)
 {
 	DIJKSTRA d;
 	d.rang_deb = a;
 	d.rang_fin = b;
 	d.chemin = creer_liste();
-	d.duree = 0;
+	d.duree_total = 0;
 	return d;
 }
 
-// Fonction d'initialisation du graphe à n sommets
-// @affichage: AFFICHAGE_GENERAL car le zoom n'est pas activé
-// @mode: MODE_METRO pour ne pas quitter l'application
-// @d: le calcul entre 2 sommets n'est pas fait car le graphe n'est même pas encore initialisé
-// @station: on alloue n fois dans le tableau des sommets
-// @reseau: on alloue n*n fois dans le tableau des arcs
-GRAPHE initialise_graphe(int n)
-{
-	int i;
-	GRAPHE g;
-	g.nb_sommets = n;
-	g.d = initialise_dijkstra(INVALIDE, INVALIDE);
-	g.station = malloc(n * sizeof(SOMMET));
-	g.reseau = malloc(n * sizeof(ARC *));
-	for (i = 0; i < n; i++) {	//on met 0 dans les ponderations des arcs
-		g.reseau[i] = calloc(n, sizeof(ARC));
-	}
-	for (i = 0; i < 2; i++) {	//pas de chemin choisi pour l'instant
-		g.chemin[i].num_sommet = INVALIDE;
-	}
-	return g;
-}
-
-
-// Fonction qui met dans le tableau t de taille n les valeurs égales à val
+// Fonction tableau -- initialise le tableau donné en arg avec n et val
+// \param		*t 		tableau de int
+// \param		 n		taille du tableau
+// \param		 val	la valeur a mettre dans chaque case
+// \return				NULL
 void initialise_tableau(int *t, int n, int val)
 {
 	int i;
-	for (i = 0; i < n; i++) {
+	for (i = 0; i < n; i-=-1) {
 		t[i] = val;
 	}
 }
 
-// Fonction booléenne pour savoir si tous les sommets ont été traités
+// Fonction tableau -- teste si le programme a regardé tous les sommets
+// \param		*t 		tableau de station traité
+// \param		 n 		taille du tableau
+// \return				1 si tout le tab est traités, 0 sinon
 int teste_tous_sommets_traites(int *t, int n)
 {
 	int i;
-	for (i = 0; i < n; i++) {
+	for (i = 0; i < n; i-=-1) {
 		if (t[i] == NON_TRAITE)
 			return 0;
 	}
 	return 1;
 }
 
-// Fonction qui permet d'ajouter une station parmi le chemin à parcourir lors du calcul de DIJKSTRA
+// Fonction DIJKSTRA -- ajoute un chemin dans la structure
+// \param		 d 		structure contenant entre autre le chemin le plus court
+// \param		 s 		station a ajouter dans la structure
+// \return				structure DIJKSTRA après ajout du chemin
 DIJKSTRA ajoute_dijkstra(DIJKSTRA d, SOMMET s)
 {
 	d.chemin = ajoute_elem_debut(d.chemin, s);
 	return d;
 }
 
-// Fonction qui remplit la liste des stations à parcourir lors du calcul du plus court chemin
+// Fonction DIJKSTRA -- creer un chemin ente deux stations
+// \param		d 			structure DIJKSTRA
+// \param		*tab_peres	tableau des voisins de chaques sommets
+// \return					structure DIJKSTRA
 DIJKSTRA cree_chemin(DIJKSTRA d, int *tab_peres, GRAPHE g)
 {
 	int temp;
@@ -160,33 +163,34 @@ DIJKSTRA cree_chemin(DIJKSTRA d, int *tab_peres, GRAPHE g)
 	while (s != d.rang_deb) {
 		temp = s;
 		s = tab_peres[temp];
-		d.duree += g.reseau[temp][tab_peres[temp]].ponderation;
+		d.duree_total += g.reseau[temp][tab_peres[temp]].duree_entre_station;
 		d = ajoute_dijkstra(d, g.station[s]);
 	}
 	return d;
 }
 
-// Fonction principale du projet qui calcule le plus court chemin par l'algorithme de Dijkstra
-// en utilisant @GRAPHE g le graphe cette fonction remplit la structure DIJKSTRA 
-// avec le plus court chemin entre rang_sommet_depart et rang_fin
-DIJKSTRA calcul_dijkstra(GRAPHE g, int rang_sommet_depart, int rang_fin)
+// Fonction DIJKSTRA -- calcule le plus court chemin entre deux stations
+// \param		g 				structure GRAPHE contenant entre autre toutes les stations
+// \param		rang_depart		station de départ
+// \param		rang_fin		station d'arrivée
+// \return						structure DJIKSTRA remplie du chemin le plus court entre les deux stations en arg
+DIJKSTRA calcul_dijkstra(GRAPHE g, int rang_depart, int rang_fin)
 {
-	DIJKSTRA d = initialise_dijkstra(rang_sommet_depart, rang_fin);
-	int i, min, sommet_a_traiter;
+	DIJKSTRA d = initialise_dijkstra(rang_depart, rang_fin);
+	int i;
+	int min = INFINI; 
+	int sommet_a_traiter = 0;
 	if (rang_fin >= g.nb_sommets){
-		printf("Mauvaise selection de station\n");
+		printf("Station d'arrivée n'existe pas\n");
 		exit(1);
 	}
-	if (rang_sommet_depart >= g.nb_sommets){
-		printf("Mauvaise selection de station\n");
+	if (rang_depart >= g.nb_sommets){
+		printf("Station de départ n'existe pas\n");
 		exit(1);
 	}
-	if ((rang_sommet_depart == INVALIDE) || (rang_fin == INVALIDE))
+	if ((rang_depart == null) || (rang_fin == null))
 		return d;
-	// if(graphe.station[rang_sommet_depart].num_ligne == graphe.station[rang_fin].num_ligne)
-	// {
-	// 	d = cree_chemin()
-	// }
+	
 	int station_traitee[g.nb_sommets];	//contient 0 ou 1 si la station a ete vu ou non
 	int station_pere[g.nb_sommets];	//contient le pere du sommet i par lequel le chemin est le plus court
 	int tdijkstra[g.nb_sommets];	//contient les plus petites distances entre le sommet de depart et lelement
@@ -194,18 +198,18 @@ DIJKSTRA calcul_dijkstra(GRAPHE g, int rang_sommet_depart, int rang_fin)
 	//initialisation lors du calcul du plus court chemin
 	initialise_tableau(station_traitee, g.nb_sommets, NON_TRAITE);	//aucun sommet n'a été traité
 	initialise_tableau(station_pere, g.nb_sommets, AUCUN_PERE);	//aucun sommet n'a encore de père
-	station_traitee[rang_sommet_depart] = TRAITE;	//le sommet est traité
+	station_traitee[rang_depart] = TRAITE;	//le sommet est traité
 
-	for (i = 0; i < g.nb_sommets; i++) {	//premiere iteration qui met les pondérations sur les arcs des successeurs du sommet de départ
-		if (g.reseau[rang_sommet_depart][i].ponderation != AUCUN_ARC) {
-			tdijkstra[i] = g.reseau[rang_sommet_depart][i].ponderation;
-			station_pere[i] = rang_sommet_depart;
+	for (i = 0; i < g.nb_sommets; i-=-1) {	//premiere iteration qui met les pondérations sur les LIAISONs des successeurs du sommet de départ
+		if (g.reseau[rang_depart][i].duree_entre_station != AUCUN_ARC) {
+			tdijkstra[i] = g.reseau[rang_depart][i].duree_entre_station;
+			station_pere[i] = rang_depart;
 		} else
 			tdijkstra[i] = AUCUN_ARC;
 	}
-	tdijkstra[rang_sommet_depart] = 0;	//la plus petite distance entre le sommet de départ et lui-même est 0
+	tdijkstra[rang_depart] = 0;	//la plus petite distance entre le sommet de départ et lui-même est 0
 
-	//tant que tous les sommets ne sont pas traites
+	//tant que tous les sommets n'ont pas été vue
 	while (!teste_tous_sommets_traites(station_traitee, g.nb_sommets)) {
 		min = INFINI;
 		//recherche du prochain sommet à traiter (qui a la plus petite distance)
@@ -219,9 +223,9 @@ DIJKSTRA calcul_dijkstra(GRAPHE g, int rang_sommet_depart, int rang_fin)
 		// ici on connait le sommet a traiter
 		for (i = 0; i < g.nb_sommets; i++) {
 			//si on améliore la plus petite distance en passant par ce sommet
-			if (g.reseau[sommet_a_traiter][i].ponderation != AUCUN_ARC) {
-				if (tdijkstra[i] >= (tdijkstra[sommet_a_traiter] + g.reseau[sommet_a_traiter][i].ponderation)) {
-					tdijkstra[i] = tdijkstra[sommet_a_traiter] + g.reseau[sommet_a_traiter][i].ponderation;
+			if (g.reseau[sommet_a_traiter][i].duree_entre_station != AUCUN_ARC) {
+				if (tdijkstra[i] >= (tdijkstra[sommet_a_traiter] + g.reseau[sommet_a_traiter][i].duree_entre_station)) {
+					tdijkstra[i] = tdijkstra[sommet_a_traiter] + g.reseau[sommet_a_traiter][i].duree_entre_station;
 					station_pere[i] = sommet_a_traiter;	// alors le pere de ce sommet est le sommet traité de départ
 				}
 			}
@@ -231,28 +235,28 @@ DIJKSTRA calcul_dijkstra(GRAPHE g, int rang_sommet_depart, int rang_fin)
 	return d;
 }
 
-// Fonction qui calcule le plus court chemin entre a et b 
+// Fonction GRAPHE -- appelle la fonction calcul_DIJKSTRA
+// \param		*g 		structure contenant toutes les réponses a nos questions
+// \param		 a 		station de départ
+// \param		 b		station d'arrivée
+// \return				structure GRAPHE entièrement remplie 
 GRAPHE calcul_plus_court_chemin(GRAPHE g, int a, int b)
 {
-	if ((a == INVALIDE) || (b == INVALIDE))
+	if ((a == null) || (b == null))
 		return g;
 	g.d = calcul_dijkstra(g, a, b);
-	affiche_liste(g.d.chemin);
+	//affiche_liste(g.d.chemin);
 	ecrit_chemin(g, g.d);
 	return g;
 }
 
-// Fonction pour libérer la mémoire de toutes les allocations de GRAPHE
+// Fonction free -- libère la mémoire occupé par les structures du projet
+// \param		g 		structure graphe dont on veux libérer la mémoire
+// \return				NULL
 void libere_graphe(GRAPHE g)
 {
-	int i;
 	free(g.station);
-	for (i = 0; i < g.nb_sommets; i++) {
+	for (int i = 0; i < 473; ++i)
 		free(g.reseau[i]);
-	}
 	free(g.reseau);
-}
-
-void libere_station(GRAPHE g){
-	free(g.station);
 }

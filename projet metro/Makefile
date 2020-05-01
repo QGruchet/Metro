@@ -5,7 +5,7 @@ CFLAGS=-c -g -Wall
 run: compile
 	./metro
 	
-valgrind: 
+valgrind: compile
 	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./metro
 	
 compile: metro.o lire_ecrire.o graphe.o 

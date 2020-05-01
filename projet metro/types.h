@@ -10,23 +10,9 @@
 #define TRAITE 1
 #define AUCUN_PERE -1
 #define AUCUN_ARC 88888
-#define INFINI 99999999
-#define INVALIDE -1
-#define PAS_DE_TERMINUS 9999
+#define INFINI 9999
+#define null -1
+#define NOEUD 9999
 
-// Constantes relatives à l'interface graphique du projet Metro
-// #define ABSCISSE_FENETRE 700
-// #define ORDONNEE_FENETRE 700
-// #define AFFICHAGE_GENERAL 0
-// #define ZOOM_HD 1
-// #define ZOOM_HG 2
-// #define ZOOM_BD 3
-// #define ZOOM_BG 4
-// #define MODE_QUITTER 5
-// #define MODE_METRO 6
-
-// Constantes autres
-#define TAILLE_CHAINE_CARACTERES 64
-#define NB_CARAC_LIGNE 4
-
+#define NOMFIC "metro.txt"
 #endif
