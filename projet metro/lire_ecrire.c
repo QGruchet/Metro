@@ -124,7 +124,7 @@ GRAPHE initialise_reseau(char *nomFichier, GRAPHE graphe)
 		graphe.reseau[i] = malloc(sizeof(LIAISON) * nb_liaisons_tot);
 	}
 
-	while (d != 'E') {	//on lit jusqu'à lire le 'E' signifiant le début des liaisons
+	while (d != 'E') {	//on lit jusqu'au ligne commencant par E
 		c = fgetc(f);
 		if (c == '\n')
 			d = fgetc(f);
@@ -173,7 +173,7 @@ void ecrit_chemin(GRAPHE graphe, DIJKSTRA d)
 	struct elem *p2 = d.chemin->suiv;
 	struct elem *temp;
 	if(graphe.station[d.rang_deb].num_sommet == graphe.station[d.rang_fin].num_sommet){
-		printf(" >> Vous etes déjà à destination (%s)\n", graphe.station[d.rang_fin].nom_station);
+		printf(" >> Vous etes déjà à destination (%s).\n", graphe.station[d.rang_fin].nom_station);
 		ecrit_duree_trajet(graphe, d, 0, 0, 0);
 	}
 
@@ -183,10 +183,10 @@ void ecrit_chemin(GRAPHE graphe, DIJKSTRA d)
 			switch(p1->s.num_ligne)
 			{
 				case(30):
-					printf("- Prenez la ligne 3bis\n");
+					printf("- Prenez la ligne 3bis direction %s.\n", graphe.station[graphe.reseau[p1->s.num_sommet][p2->s.num_sommet].terminus].nom_station);
 					break;
 				case(70):
-					printf("- Prenez la ligne 7bis\n");
+					printf("- Prenez la ligne 7bis direction %s.\n", graphe.station[graphe.reseau[p1->s.num_sommet][p2->s.num_sommet].terminus].nom_station);
 					break;
 				default:
 					printf("- Prenez la ligne %d direction %s.\n", p1->s.num_ligne, graphe.station[graphe.reseau[p1->s.num_sommet][p2->s.num_sommet].terminus].nom_station);
@@ -206,12 +206,12 @@ void ecrit_chemin(GRAPHE graphe, DIJKSTRA d)
 				temp = p2->suiv;
 				printf("direction %s.\n", graphe.station[graphe.reseau[p2->s.num_sommet][temp->s.num_sommet].terminus].nom_station);
 			} 
-			else printf("Jusqu'a %s\n", graphe.station[d.rang_fin].nom_station);
+			else printf("Jusqu'a %s.\n", graphe.station[d.rang_fin].nom_station);
 		}
 		p1 = p1->suiv;
 		p2 = p2->suiv;
 	}
-	printf("	Vous devriez arrivé a %s dans ", graphe.station[d.rang_fin].nom_station);
+	printf("  Vous devriez arrivé a %s dans ", graphe.station[d.rang_fin].nom_station);
 	ecrit_duree_trajet(graphe, d, h, m, s);
 }
 
@@ -223,5 +223,5 @@ void ecrit_chemin(GRAPHE graphe, DIJKSTRA d)
 // \param		seconde			le nombre de secondes du trajet
 // \return						GRAPHE
 void ecrit_duree_trajet(GRAPHE graphe, DIJKSTRA d, int heure, int minute, int seconde){
-	printf("%d heure(s), %d minute(s), %d seconde(s)\n", heure, minute, seconde);
+	printf("%d heure(s), %d minute(s), %d seconde(s).\n", heure, minute, seconde);
 }

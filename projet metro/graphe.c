@@ -181,11 +181,11 @@ DIJKSTRA calcul_dijkstra(GRAPHE graphe, int rang_depart, int rang_fin)
 	int min = INFINI; 
 	int sommet_a_traiter = 0;
 	if (rang_fin >= graphe.nb_sommets){
-		printf("Station d'arrivée n'existe pas\n");
+		printf("La station d'arrivée n'existe pas\n");
 		exit(1);
 	}
 	if (rang_depart >= graphe.nb_sommets){
-		printf("Station de départ n'existe pas\n");
+		printf("La station de départ n'existe pas\n");
 		exit(1);
 	}
 	if ((rang_depart == null) || (rang_fin == null))
