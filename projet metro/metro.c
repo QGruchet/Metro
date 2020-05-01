@@ -8,7 +8,7 @@
 
 	if(cmd[0] == 'q' && cmd[1] == 'u' && cmd[2] == 'i' && cmd[3] == 't' && cmd[4] == 't' && cmd[5] == 'e' && cmd[6] == 'r'){
 		libere_graphe(graphe);
-		return printf("\tBye Bye. Revenez vite Ebovoyag !\n"), 0;
+		return printf("\tBye Bye. Revenez vite chez Ebovoyag !\n"), 0;
 	}
 	if(cmd[0] == 'l' && cmd[1] == 's'){
 
@@ -69,13 +69,45 @@
 	}
 	
  	if(cmd[0] == 'c' && cmd[1] == 'a' && cmd[2] == 'l' && cmd[3] == 'c' && cmd[4] == 'u' && cmd[5] == 'l' && cmd[6] == 'e' ){
-		int deb, fin = 0;
-		printf("\tOH SHIT HERE WE GO AGAIN !\n");
-		printf("Veuillez rentrer le numero de la station de départ : ");
-		scanf("%d", &deb);
-		printf("Veuillez rentrer le numero de la station d'arrivée : ");
-		scanf("%d", &fin);
-		graphe = calcul_plus_court_chemin(graphe, deb, fin);
+ 		if(cmd[7] == '-' && cmd[8] == 'a'){
+			int deb, fin = 0;
+			printf("\tOH SHIT HERE WE GO AGAIN !\n");
+			printf("Veuillez rentrer le numero de la station de départ : ");
+			scanf("%d", &deb);
+			deb--;
+			printf("\tStation de départ : %s\n", graphe.station[deb].nom_station);
+			printf("Veuillez rentrer le numero de la station d'arrivée : ");
+			scanf("%d", &fin);
+			fin++;
+			printf("\tStation d'arrivee : %s\n", graphe.station[fin].nom_station);
+			graphe = calcul_plus_court_chemin(graphe, deb, fin, 2);
+		}
+		if(cmd[7] == '-' && cmd[8] == 'l'){
+			int deb, fin = 0;
+			printf("\tOH SHIT HERE WE GO AGAIN !\n");
+			printf("Veuillez rentrer le numero de la station de départ : ");
+			scanf("%d", &deb);
+			deb--;
+			printf("\tStation de départ : %s\n", graphe.station[deb].nom_station);
+			printf("Veuillez rentrer le numero de la station d'arrivée : ");
+			scanf("%d", &fin);
+			fin++;
+			printf("\tStation d'arrivee : %s\n", graphe.station[fin].nom_station);
+			graphe = calcul_plus_court_chemin(graphe, deb, fin, 1);
+		}
+		if(cmd[7] == '-' && cmd[8] == 't'){
+			int deb, fin = 0;
+			printf("\tOH SHIT HERE WE GO AGAIN !\n");
+			printf("Veuillez rentrer le numero de la station de départ : ");
+			scanf("%d", &deb);
+			deb--;
+			printf("\tStation de départ : %s\n", graphe.station[deb].nom_station);
+			printf("Veuillez rentrer le numero de la station d'arrivée : ");
+			scanf("%d", &fin);
+			fin++;
+			printf("\tStation d'arrivee : %s\n", graphe.station[fin].nom_station);
+			graphe = calcul_plus_court_chemin(graphe, deb, fin, 3);
+		}
  	}
 
  	if(cmd[0] == 'h' && cmd[1] == 'e' && cmd[2] == 'l' && cmd[3] == 'p'){
@@ -84,16 +116,19 @@
 		printf("ls-a : lister les stations par ordre alphabetique\n");
 		printf("reseau : afficher le reseau\n");
 		printf("nombre : afficher le nombres de stations\n");
-		printf("calcule : calcul le plus court chemin entre deux stations\n");
+		printf("calcule-l : affiche le trajet sous forme de liste\n");
+		printf("calcule-a : affiche le trajet sous forme d'un affichage\n");
+		printf("calcule-t : affiche le trajet sous forme de liste et avec affichage\n");
 		printf("quitter : quitter le menu\n");
 	}
 
  	return -1;
 }
 
+
 int main(int argc, char* argv[])
 {
-	printf("\t     Bienvenue dans l'appli Ebovoyag. Cette application permet de trouver son trajet à travers le metropolitain Parisien. Tapez 'h' pour obtenir la liste des commandes disponibles.\n\n\n");
+	printf("\t     Bienvenue dans l'appli Ebovoyag. Cette application permet de trouver son trajet à travers le metropolitain Parisien. Tapez 'help' pour obtenir la liste des commandes disponibles.\n\n\n");
 	char buffer[64];
 	GRAPHE graphe;
 	graphe = compte_nb_sommets(NOMFIC, graphe);
