@@ -61,9 +61,9 @@
 		int deb, fin = 0;
 		printf("\tOH SHIT HERE WE GO AGAIN !\n");
 		printf("Veuillez rentrer le numero de la station de départ : ");
-		scanf("%d\n", &deb);
+		scanf("%d", &deb);
 		printf("Veuillez rentrer le numero de la station d'arrivée : ");
-		scanf("%d\n", &fin);
+		scanf("%d", &fin);
 		graphe = calcul_plus_court_chemin(graphe, deb, fin);
  	}
  	return -1;
