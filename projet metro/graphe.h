@@ -23,11 +23,11 @@ typedef struct dijkstra {
 } DIJKSTRA;
 
 typedef struct graphe {
-	SOMMET chemin[2];		//tableau contenant station d'arrivée et station de départ
-	DIJKSTRA d;				//contient le plus court chemin entre les stations
-	int nb_sommets;			//nombre total de sommet 
-	SOMMET *station;		//tableau des stations(sommet)
-	LIAISON **reseau;		//tableau des liaisons entre stations
+	SOMMET chemin[2];		//< tableau contenant station d'arrivée et station de départ
+	DIJKSTRA d;				//< contient le plus court chemin entre les stations
+	int nb_sommets;			//< nombre total de sommet 
+	SOMMET *station;		//< tableau des stations(sommet)
+	LIAISON **reseau;		//< tableau des liaisons entre stations
 } GRAPHE;
 
 struct elem {	
@@ -41,8 +41,8 @@ struct elem *libere_liste(struct elem *l);
 void libere_chemin_dijkstra(struct elem *l);
 
 GRAPHE initialise_graphe(int n);
-DIJKSTRA calcul_dijkstra(GRAPHE g, int rang_sommet_depart, int rang_fin);
-GRAPHE calcul_plus_court_chemin(GRAPHE g, int a, int b, int choix);
-void libere_graphe(GRAPHE g);
+DIJKSTRA calcul_dijkstra(GRAPHE graphe, int rang_sommet_depart, int rang_fin);
+GRAPHE calcul_plus_court_chemin(GRAPHE graphe, int a, int b, int choix);
+void libere_graphe(GRAPHE graphe);
 
 #endif

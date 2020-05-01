@@ -5,6 +5,7 @@ V 0000 12 Abbesses
 V 0001 2 Alexandre Dumas
 V 0002 9 Alma Marceau
 V 0003 4 Alési
+V 0004 3 Anatole France
 V 0005 2 Anvers
 V 0006 1 Argentine
 V 0007 11 Arts et Metiers
@@ -40,7 +41,7 @@ V 0036 10 Boulogne, Jean Jaures
 V 0037 10 Boulogne, Pont de Saint-Cloud, Rond Point Rhin et Danube 
 V 0038 3  Bourse
 V 0039 13 Brochant
-V 0040 5 Breguet-Sabin
+V 0040 5 Breguet-Sabin324
 V 0041 70 Buttes Chaumont
 V 0042 9 Buzenval
 V 0043 1 Berault
@@ -63,11 +64,11 @@ V 0059 7 Chaussee d'Antin, La Fayette
 V 0060 9 Chaussee d'Antin, La Fayette
 V 0061 8 Chemin Vert
 V 0062 6 Chevaleret
-V 0063 7 Ch&teau Landon
-V 0064 4 Ch&teau Rouge
-V 0065 4 Ch&teau d'Eau
-V 0066 1 Ch&teau de Vincennes
-V 0067 1 Ch&telet
+V 0063 7 Chateau Landon
+V 0064 4 Chateau Rouge
+V 0065 4 Chateau d'Eau
+V 0066 1 Chateau de Vincennes
+V 0067 1 Chatelet
 V 0068 11 Chatelet
 V 0069 14 Chatelet
 V 0070 4 Chatelet

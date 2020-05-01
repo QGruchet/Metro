@@ -68,8 +68,8 @@
 		printf("%d stations trouvées\n", graphe.nb_sommets);
 	}
 	
- 	if(cmd[0] == 'c' && cmd[1] == 'a' && cmd[2] == 'l' && cmd[3] == 'c' && cmd[4] == 'u' && cmd[5] == 'l' && cmd[6] == 'e' ){
- 		if(cmd[7] == '-' && cmd[8] == 'a'){
+ 	if(cmd[0] == 'c' && cmd[1] == 'a' && cmd[2] == 'l' && cmd[3] == 'c' && cmd[4] == 'u' && cmd[5] == 'l'){
+ 		if(cmd[6] == '-' && cmd[7] == 'a'){
 			int deb, fin = 0;
 			printf("\tOH SHIT HERE WE GO AGAIN !\n");
 			printf("Veuillez rentrer le numero de la station de départ : ");
@@ -80,7 +80,7 @@
 			printf("\tStation d'arrivee : %s\n\n", graphe.station[fin].nom_station);
 			graphe = calcul_plus_court_chemin(graphe, deb, fin, 2);
 		}
-		if(cmd[7] == '-' && cmd[8] == 'l'){
+		if(cmd[6] == '-' && cmd[7] == 'l'){
 			int deb, fin = 0;
 			printf("\tOH SHIT HERE WE GO AGAIN !\n");
 			printf("Veuillez rentrer le numero de la station de départ : ");
@@ -92,7 +92,7 @@
 			printf("\tStation d'arrivee : %s\n\n", graphe.station[fin].nom_station);
 			graphe = calcul_plus_court_chemin(graphe, deb, fin, 1);
 		}
-		if(cmd[7] == '-' && cmd[8] == 't'){
+		if(cmd[6] == '-' && cmd[7] == 't'){
 			int deb, fin = 0;
 			printf("\tOH SHIT HERE WE GO AGAIN !\n");
 			printf("Veuillez rentrer le numero de la station de départ : ");
@@ -114,9 +114,9 @@
 		printf("ls-a : liste les stations par ordre alphabetique\n");
 		printf("reseau : affiche le reseau\n");
 		printf("nombre : affiche le nombres de stations\n");
-		printf("calcule-l : affiche le trajet sous forme de liste\n");
-		printf("calcule-a : affiche le trajet sous forme d'un affichage\n");
-		printf("calcule-t : affiche le trajet sous forme de liste et avec affichage\n");
+		printf("calcul-l : affiche le trajet suivi par l'algo (permet de débugg)\n");
+		printf("calcul-a : affiche le trajet sous forme d'un affichage\n");
+		printf("calcul-t : affiche le trajet sous forme d'affichage + debugg\n");
 		printf("quitter : quitte le programme\n");
 	}
 
@@ -127,6 +127,7 @@
 int main(int argc, char* argv[])
 {
 	printf("   Bienvenue dans l'appli Ebovoyag. Cette application permet de trouver son trajet (le plus rapide) à travers le metropolitain Parisien. Tapez 'help' pour obtenir la liste des commandes disponibles.\n\n\n");
+	printf("   P.S: n'oubliez pas de quitter le programme pour libérer la mémoire. La Direction.\n");
 	char buffer[64];
 	GRAPHE graphe;
 	graphe = compte_nb_sommets(NOMFIC, graphe);
