@@ -10,30 +10,50 @@
 		libere_graphe(graphe);
 		return printf("\tBye Bye. Revenez vite Ebovoyag !\n"), 0;
 	}
-	if(cmd[0] == 'l'){
-		for (int j = 1; j < 100; ++j)
-		{
-			for (int i = 0; i < graphe.nb_sommets; ++i)
+	 
+	if(cmd[0] == 'l' && cmd[1] == 's'){
+
+		if(cmd[2] == '-' && cmd[3] == 'a'){
+			for(int i = 0; i < graphe.nb_sommets; i-=-1){
+				printf("numero %d | ", graphe.station[i].num_sommet);
+				if(graphe.station[i].num_ligne == 70){
+					printf("ligne : 7bis station : ");
+				}
+				if(graphe.station[i].num_ligne == 30){
+					printf("ligne : 3bis station : ");
+				}
+				else printf("ligne : %d station : ", graphe.station[i].num_ligne);
+				for(int h = 0; h < graphe.station[i].nombre_nom; ++h){
+					printf("%c", graphe.station[i].nom_station[h]);
+				}
+				printf("\n");
+			}
+		}
+
+		if(cmd[2] == '-' && cmd[3] == 'l'){
+			for (int j = 1; j < 100; ++j)
 			{
-				if(graphe.station[i].num_ligne == j){
-					printf("numero %d | ", graphe.station[i].num_sommet);
-					if(graphe.station[i].num_ligne == 70){
-						printf("ligne : 7bis station : ");
+				for (int i = 0; i < graphe.nb_sommets; i-=-1)
+				{
+					if(graphe.station[i].num_ligne == j){
+						printf("numero %d | ", graphe.station[i].num_sommet);
+						if(graphe.station[i].num_ligne == 70){
+							printf("ligne : 7bis station : ");
+						}
+						if(graphe.station[i].num_ligne == 30){
+							printf("ligne : 3bis station : ");
+						}
+						else printf("ligne : %d station : ", graphe.station[i].num_ligne);
+						for(int h = 0; h < graphe.station[i].nombre_nom; ++h){
+							printf("%c", graphe.station[i].nom_station[h]);
+						}
+						printf("\n");
 					}
-					if(graphe.station[i].num_ligne == 30){
-						printf("ligne : 3bis station : ");
-					}
-					else printf("ligne : %d station : ", graphe.station[i].num_ligne);
-					for(int h = 0; h < graphe.station[i].nombre_nom; ++h){
-						printf("%c", graphe.station[i].nom_station[h]);
-					}
-					printf("\n");
 				}
 			}
-			
 		}
 	}
-
+	 
 	if(cmd[0] == 'r'){
 		for (int i = 0; i < graphe.nb_sommets; ++i)
 		{
@@ -46,7 +66,8 @@
 	}
 
 	if(cmd[0] == 'h'){
-		printf("l : lister les stations\n");
+		printf("ls-l : lister les stations par ligne\n");
+		printf("ls-a : lister les stations par ordre alphabetique\n");
 		printf("q : quitter le menu\n");
 		printf("r : afficher le reseau\n");
 		printf("n : afficher le nombres de stations\n");
