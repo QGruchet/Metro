@@ -57,9 +57,7 @@ GRAPHE initialise_stations(char *nomFichier, GRAPHE graphe)
 		if (c == '\n')
 			i++;
 	}
-	//pour chaque sommet, on lit son numero de sommet, son numero de ligne, et son nom
-	//chaque sommet correspond à une station d'une ligne
-	//Attention: on peut avoir plusieurs stations avec le même nom (pas la même ligne)
+	
 	for (int h = 0; h < graphe.nb_sommets; h++) {
 		c = fgetc(f);
 		if(c == 'V'){
@@ -81,6 +79,34 @@ GRAPHE initialise_stations(char *nomFichier, GRAPHE graphe)
 	return graphe;
 }
 
+// Fonction GRAPHE -- compte le nombre de liaisons total dans le graphe
+// \param		*nomFichier		nom du fichier a ouvrir
+// \return						nombre total de liaisons
+int compte_nb_liaison(char* nomFichier){
+	FILE *f = fopen(nomFichier, "r");
+	int i = 0;
+	char c = ' ';
+	char d = ' ';
+	while (i < 3) {		//On ignore les 3 premieres lignes
+		c = fgetc(f);
+		if (c == '\n')
+			i++;
+	}
+	i = 1;
+	while(d != EOF)
+	{
+		c = fgetc(f);
+		if (c == '\n') {
+			d = fgetc(f);
+			if (d == 'E') {
+				i++;
+			}
+		}
+	}
+	fclose(f);
+	return i;
+}
+
 // Fonction GRAPHE -- remplie la structure GRAPHE avec toutes les liaisons entre stations
 // \param		*nomFichier		nom du fichier a ouvrir
 // \param		 graphe 		structure a remplir
@@ -90,13 +116,15 @@ GRAPHE initialise_reseau(char *nomFichier, GRAPHE graphe)
 	printf("Initialisations du reseaux du Metropolitain...");
 	FILE *f = fopen(nomFichier, "r");
 	char c, d = ' ';
-	graphe.reseau = malloc(sizeof(LIAISON*)*473);
-	for (int i = 0; i < 473; ++i)
+	int nb_liaisons_tot = compte_nb_liaison(nomFichier);
+
+	graphe.reseau = malloc(sizeof(LIAISON*)*nb_liaisons_tot);
+	for (int i = 0; i < nb_liaisons_tot; ++i)
 	{
-		graphe.reseau[i] = malloc(sizeof(LIAISON) * 473);
+		graphe.reseau[i] = malloc(sizeof(LIAISON) * nb_liaisons_tot);
 	}
 
-	while (d != 'E') {	//on lit jusqu'à lire le 'E' signifiant le début des LIAISONs
+	while (d != 'E') {	//on lit jusqu'à lire le 'E' signifiant le début des liaisons
 		c = fgetc(f);
 		if (c == '\n')
 			d = fgetc(f);
@@ -105,8 +133,7 @@ GRAPHE initialise_reseau(char *nomFichier, GRAPHE graphe)
 	int test = 0;
 	int station1, station2, duree, term1, term2;
 	int i, j;
-	//on met d'abord aucun terminus et aucune liaison entre chaque sommet
-	//comme ça les sommets avec les mêmes noms n'auront pas de terminus car c'est juste un changement de ligne
+
 	for (i = 0; i < graphe.nb_sommets; i++) {
 		for (j = 0; j < graphe.nb_sommets; j++) {
 			graphe.reseau[i][j].terminus = NOEUD;
@@ -120,12 +147,10 @@ GRAPHE initialise_reseau(char *nomFichier, GRAPHE graphe)
 		if (d == EOF)
 			test = 1;
 		d = ungetc(d, f);
-		//ponder correspond à la ponderondération dans une liaison
-		//direc1 correspond au terminus entre le premier et le deuxieme sommet
-		//direc2 correspond au terminus entre le deuxieme et le premier sommet
+
 		graphe.reseau[station1][station2].duree_entre_station = duree;
 		graphe.reseau[station1][station2].terminus = term1;
-		//le symétrique est aussi initialisé car les lignes de metro vont dans les 2 sens
+
 		graphe.reseau[station2][station1].duree_entre_station = duree;
 		graphe.reseau[station2][station1].terminus = term2;
 	}
@@ -147,8 +172,6 @@ void ecrit_chemin(GRAPHE graphe, DIJKSTRA d)
 	struct elem *p1 = d.chemin;
 	struct elem *p2 = d.chemin->suiv;
 	struct elem *temp;
-	printf("- Station de depart : %s.\n", graphe.station[d.rang_deb].nom_station);
-	printf("- Station d'arrivee : %s.\n", graphe.station[d.rang_fin].nom_station);
 	if(graphe.station[d.rang_deb].num_sommet == graphe.station[d.rang_fin].num_sommet){
 		printf(" >> Vous etes déjà à destination (%s)\n", graphe.station[d.rang_fin].nom_station);
 		ecrit_duree_trajet(graphe, d, 0, 0, 0);
@@ -181,12 +204,6 @@ void ecrit_chemin(GRAPHE graphe, DIJKSTRA d)
 			else printf("%d ", p1->s.num_ligne);
 
 			printf("Jusqu'a %s\n", p2->s.nom_station);
-
-			// if (p2->s.num_sommet != d.rang_fin) {
-			// 	temp = p2->suiv;
-			// 	//printf("direction : %s", graphe.station[graphe.reseau[p2->s.num_sommet][temp->s.num_sommet].terminus].nom_station);
-			// 	printf("\n");
-			// } else printf("\n");
 		}
 		p1 = p1->suiv;
 		p2 = p2->suiv;
