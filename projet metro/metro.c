@@ -1,13 +1,17 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 #include "graphe.h"
 #include "lire_ecrire.h"
 #include "types.h"
-
+// Fonction choix -- analyse le cmd et lance la fonction qui correspond
+// \param		cmd 			tableau dynamique qui contient la commande de l'user
+// \param		graphe 			structure graphe
+// \return						0
  int choix(const char* cmd, GRAPHE graphe){
 
 	if(cmd[0] == 'q' && cmd[1] == 'u' && cmd[2] == 'i' && cmd[3] == 't' && cmd[4] == 't' && cmd[5] == 'e' && cmd[6] == 'r'){
-		return printf("\tBye Bye. Revenez vite chez Ebovoyag !\n"), 0;
+		return printf("\tBye Bye. Revenez vite chez &-BonVoyage !\n"), 0;
 	}
 	if(cmd[0] == 'l' && cmd[1] == 's'){
 
@@ -79,6 +83,15 @@
 			printf("\tStation d'arrivee : %s\n\n", graphe.station[fin].nom_station);
 			graphe = calcul_plus_court_chemin(graphe, deb, fin, 2);
 		}
+		if(cmd[6] == '-' && cmd[7] == 'r'){
+			srand(time(0));
+			int deb, fin = 0;
+			deb = rand() % 376;
+			fin = rand() % 376;
+			printf("\tStation de départ : %s\n\n", graphe.station[deb].nom_station);
+			printf("\tStation d'arrivee : %s\n\n", graphe.station[fin].nom_station);
+			graphe = calcul_plus_court_chemin(graphe, deb, fin, 3);
+		}
 		if(cmd[6] == '-' && cmd[7] == 'l'){
 			int deb, fin = 0;
 			printf("\tOH SH*T HERE WE GO AGAIN !\n");
@@ -116,16 +129,20 @@
 		printf("\tcalcul-l : affiche le trajet suivi par l'algo (permet de débugg)\n");
 		printf("\tcalcul-a : affiche le trajet sous forme d'un affichage\n");
 		printf("\tcalcul-t : affiche le trajet sous forme d'affichage + debugg\n");
+		printf("\tcalcul-r : affiche un trajet aléatoire sous forme d'affichage + debugg\n");
 		printf("\tquitter : quitte le programme\n");
 	}
 
  	return -1;
 }
 
-
+// Fonction pincipale -- 
+// \param		arc 			nombre d'argument 
+// \param		argc[] 			argument
+// \return						0 en cas de reussite
 int main(int argc, char* argv[])
 {
-	printf("   Bienvenue dans l'appli Ebovoyag. Cette application permet de trouver son trajet (le plus rapide) à travers le metropolitain Parisien. Tapez 'help' pour obtenir la liste des commandes disponibles.\n");
+	printf("   Bienvenue dans l'appli &-BonVoyage. Cette application permet de trouver son trajet (le plus rapide) à traversle metropolitain Parisien. Tapez 'help' pour obtenir la liste des commandes disponibles.\n");
 	printf("   P.S: N'oubliez pas de quitter le programme pour libérer la mémoire. La Direction.\n\n\n");
 	char buffer[64];
 	GRAPHE graphe;
