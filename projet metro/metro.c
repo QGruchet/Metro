@@ -7,7 +7,6 @@
  int choix(const char* cmd, GRAPHE graphe){
 
 	if(cmd[0] == 'q' && cmd[1] == 'u' && cmd[2] == 'i' && cmd[3] == 't' && cmd[4] == 't' && cmd[5] == 'e' && cmd[6] == 'r'){
-		libere_graphe(graphe);
 		return printf("\tBye Bye. Revenez vite chez Ebovoyag !\n"), 0;
 	}
 	if(cmd[0] == 'l' && cmd[1] == 's'){
@@ -71,7 +70,7 @@
  	if(cmd[0] == 'c' && cmd[1] == 'a' && cmd[2] == 'l' && cmd[3] == 'c' && cmd[4] == 'u' && cmd[5] == 'l'){
  		if(cmd[6] == '-' && cmd[7] == 'a'){
 			int deb, fin = 0;
-			printf("\tOH SHIT HERE WE GO AGAIN !\n");
+			printf("\tOH SH*T HERE WE GO AGAIN !\n");
 			printf("  Veuillez rentrer le numero de la station de départ : ");
 			scanf("%d", &deb);
 			printf("\tStation de départ : %s\n", graphe.station[deb].nom_station);
@@ -82,7 +81,7 @@
 		}
 		if(cmd[6] == '-' && cmd[7] == 'l'){
 			int deb, fin = 0;
-			printf("\tOH SHIT HERE WE GO AGAIN !\n");
+			printf("\tOH SH*T HERE WE GO AGAIN !\n");
 			printf("  Veuillez rentrer le numero de la station de départ : ");
 			scanf("%d", &deb);
 			
@@ -94,7 +93,7 @@
 		}
 		if(cmd[6] == '-' && cmd[7] == 't'){
 			int deb, fin = 0;
-			printf("\tOH SHIT HERE WE GO AGAIN !\n");
+			printf("\tOH SH*T HERE WE GO AGAIN !\n");
 			printf("  Veuillez rentrer le numero de la station de départ : ");
 			scanf("%d", &deb);
 			printf("\tStation de départ : %s\n", graphe.station[deb].nom_station);
@@ -139,5 +138,6 @@ int main(int argc, char* argv[])
  											
  		fgets(buffer, 64, stdin);
  	}while(choix(buffer, graphe));
+ 	libere_graphe(graphe);
 	
 }

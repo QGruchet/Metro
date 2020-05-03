@@ -1,11 +1,6 @@
-
-// types.h du projet Metro
-// Contient les constantes du projet Metro
-
 #ifndef __TYPES_H
 #define __TYPES_H
 
-// Constantes relatives à la manipulation de graphe
 #define NON_TRAITE 0
 #define TRAITE 1
 #define AUCUN_PERE -1

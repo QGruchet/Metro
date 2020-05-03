@@ -1,7 +1,3 @@
-
-// lire_ecrire.h du projet Metro
-// Contient les signatures des fonctions de lire_ecrire.c
-
 #include "types.h"
 #include "graphe.h"
 

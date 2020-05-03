@@ -4,8 +4,6 @@
 #include "lire_ecrire.h"
 #include "types.h"
 
-/* Fonctions de manipulations de listes */
-
 // Fonction liste -- creer une liste vide
 // \return				NULL
 struct elem *creer_liste()
@@ -97,8 +95,6 @@ struct elem *ajoute_elem_debut(struct elem *l, SOMMET sommet)
 	new->suiv = l;
 	return new;
 }
-
-/*--------------------------------------------------*/
 
 // Fonction DIJKSTRA -- initialise la structure DJIKSTRA
 // \param		 a 		station de départ

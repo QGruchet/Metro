@@ -195,18 +195,18 @@ void ecrit_chemin(GRAPHE graphe, DIJKSTRA d)
 		}
 		
 		//si on change de ligne
-		if (graphe.reseau[p1->s.num_sommet][p2->s.num_sommet].terminus == NOEUD)
+		if (graphe.reseau[p1->s.num_sommet][p2->s.num_sommet].terminus == NOEUD )//&& p2->s.num_sommet != d.rang_fin)
 		{
 			printf("- A %s, prenez la ligne ", p1->s.nom_station);
 
-			if (p1->s.num_ligne == 30) printf("3bis");
-			else if (p1->s.num_ligne == 70) printf("7bis");
+			if (p2->s.num_ligne == 30) printf("3bis ");
+			else if (p2->s.num_ligne == 70) printf("7bis ");
 			else printf("%d ", p2->s.num_ligne);
 			if (p2->s.num_sommet != d.rang_fin) {
 				temp = p2->suiv;
 				printf("direction %s.\n", graphe.station[graphe.reseau[p2->s.num_sommet][temp->s.num_sommet].terminus].nom_station);
 			} 
-			else printf("Jusqu'a %s.\n", graphe.station[d.rang_fin].nom_station);
+			//else printf("Jusqu'a %s.\n", graphe.station[d.rang_fin].nom_station);
 		}
 		p1 = p1->suiv;
 		p2 = p2->suiv;

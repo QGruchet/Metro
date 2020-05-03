@@ -1,5 +1,3 @@
-# Makefile du projet Metro
-
 CFLAGS=-c -g -Wall
 
 run: compile
